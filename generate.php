@@ -51,7 +51,7 @@ $sura = $suras[1];
 
 $mpdf->WriteHTML('<tocpagebreak links="on" />');
 
-for ($i=0; $i<200; ++$i) {
+for ($i=0; $i<count($arabic); ++$i) {
     $aya = $arabic[$i];
     $tr = $translation[$i];
 
@@ -70,9 +70,15 @@ for ($i=0; $i<200; ++$i) {
             $mpdf->WriteHTML('<pagebreak />');
         }
         $mpdf->WriteHTML('<tocentry content="'.htmlspecialchars($sura[5], ENT_QUOTES).'" />
-        <bookmark content="'.htmlspecialchars($sura[5], ENT_QUOTES).'" />');
+        <bookmark content="'.str_pad($lastSuraNum, 3, '0', STR_PAD_LEFT).' - '.htmlspecialchars($sura[5], ENT_QUOTES).'" />');
         $mpdf->WriteHTML('<div style="width:100%;text-align:center;font-size:18pt;color:red;" dir="rtl">'.$sura[4].'</div>');
         $mpdf->WriteHTML('<div style="width:100%;text-align:center;font-size:12pt;color:red;">'.$sura[5].'</div><br />');
+    }
+
+    if ($ayaNum == 1 && ($suraNum!=1 && $suraNum!=9)) {
+        $b = "بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ";
+        $ayaText = str_replace($b, "", $ayaText);
+        $mpdf->WriteHTML('<div lang="ar" style="font-family:me_quran;font-size:17pt;" dir="rtl">'.$b.'</div>');
     }
 
     if ($ayaNum % 20 == 0) {
